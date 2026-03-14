@@ -98,4 +98,16 @@ app.get("/whitelist/invite-stats/:code", async (req, res) => {
   } catch(e) { res.json({ error: "Server error" }); }
 });
 
+// Admin dashboard API
+app.get("/admin/data", async (req, res) => {
+  const { password } = req.query;
+  if (password !== (process.env.ADMIN_PASSWORD || "whale2026")) return res.status(401).json({ error: "Unauthorized" });
+  try {
+    const users = await pool.query("SELECT position, username, email, wallet, invite_code, invited_by, created_at FROM whitelist ORDER BY position ASC");
+    const total = users.rows.length;
+    const invites = await pool.query("SELECT invited_by, COUNT(*) as count FROM whitelist WHERE invited_by IS NOT NULL GROUP BY invited_by ORDER BY count DESC");
+    res.json({ total, users: users.rows, topInviters: invites.rows });
+  } catch(e) { console.error(e); res.status(500).json({ error: "Server error" }); }
+});
+
 app.listen(3000, async () => { await initDB(); console.log("Server running"); });

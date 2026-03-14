@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHALENIZER Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Inter',sans-serif;padding:40px 24px;}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #222;}
+.title{font-size:20px;font-weight:600;color:#fff;}
+.subtitle{font-size:13px;color:#666;margin-top:4px;}
+.login-box{max-width:360px;margin:100px auto;background:#111;border:1px solid #222;border-radius:16px;padding:32px;}
+.login-title{font-size:18px;font-weight:600;color:#fff;margin-bottom:24px;text-align:center;}
+.field{margin-bottom:16px;}
+.field input{width:100%;padding:12px 14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;}
+.field input:focus{border-color:#555;}
+.btn{width:100%;padding:13px;background:#fff;color:#000;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;}
+.btn:hover{background:#e0e0e0;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
+.stat-card{background:#111;border:1px solid #222;border-radius:12px;padding:20px;}
+.stat-val{font-size:32px;font-weight:700;color:#fff;margin-bottom:4px;}
+.stat-lbl{font-size:12px;color:#666;letter-spacing:1px;text-transform:uppercase;}
+table{width:100%;border-collapse:collapse;background:#111;border-radius:12px;overflow:hidden;}
+th{padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#666;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #222;}
+td{padding:12px 16px;font-size:13px;border-bottom:1px solid #1a1a1a;color:#ccc;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#151515;}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+.badge-green{background:#0a2a0a;color:#4ade80;border:1px solid #166534;}
+.badge-blue{background:#0a1a2a;color:#60a5fa;border:1px solid #1d4ed8;}
+.wallet{font-family:monospace;font-size:12px;}
+.search{padding:10px 14px;background:#111;border:1px solid #222;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:13px;outline:none;width:280px;margin-bottom:16px;}
+.search:focus{border-color:#444;}
+.export-btn{padding:8px 16px;background:#1a1a1a;color:#fff;border:1px solid #333;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;margin-left:12px;}
+.export-btn:hover{background:#222;}
+.err{color:#f87171;text-align:center;margin-top:12px;font-size:13px;}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">WHALENIZER Admin</div>
+    <div class="field"><input type="password" id="pw-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn" onclick="doLogin()">Login</button>
+    <div class="err" id="login-err"></div>
+  </div>
+</div>
+
+<div id="dashboard" style="display:none;">
+  <div class="header">
+    <div>
+      <div class="title">WHALENIZER Admin</div>
+      <div class="subtitle">Whitelist Dashboard</div>
+    </div>
+    <div>
+      <input class="search" id="search" placeholder="Search username, email, wallet..." oninput="filterTable()">
+      <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+      <button class="export-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-val" id="stat-total">0</div><div class="stat-lbl">Total Signups</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-invited">0</div><div class="stat-lbl">Via Invite</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-today">0</div><div class="stat-lbl">Joined Today</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-top-inviter">-</div><div class="stat-lbl">Top Inviter</div></div>
+  </div>
+
+  <table id="users-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Wallet</th>
+        <th>Invite Code</th>
+        <th>Invited By</th>
+        <th>Joined</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<script>
+var allUsers = [];
+var adminPw = '';
+
+async function doLogin() {
+  var pw = document.getElementById('pw-input').value;
+  if (!pw) return;
+  var r = await fetch('/admin/data?password=' + encodeURIComponent(pw));
+  if (r.status === 401) { document.getElementById('login-err').textContent = 'Wrong password'; return; }
+  var d = await r.json();
+  if (d.error) { document.getElementById('login-err').textContent = d.error; return; }
+  adminPw = pw;
+  allUsers = d.users;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  renderStats(d);
+  renderTable(allUsers);
+}
+
+function renderStats(d) {
+  document.getElementById('stat-total').textContent = d.total;
+  var invited = d.users.filter(function(u){return u.invited_by;}).length;
+  document.getElementById('stat-invited').textContent = invited;
+  var today = new Date().toDateString();
+  var todayCount = d.users.filter(function(u){return new Date(u.created_at).toDateString()===today;}).length;
+  document.getElementById('stat-today').textContent = todayCount;
+  if (d.topInviters && d.topInviters.length) {
+    var top = d.topInviters[0];
+    var topUser = d.users.find(function(u){return u.invite_code===top.invited_by;});
+    document.getElementById('stat-top-inviter').textContent = topUser ? topUser.username : top.invited_by;
+  }
+}
+
+function renderTable(users) {
+  var tbody = document.getElementById('table-body');
+  tbody.innerHTML = users.map(function(u) {
+    var w = u.wallet || '';
+    var shortW = w.length > 16 ? w.slice(0,8)+'...'+w.slice(-6) : w;
+    var date = new Date(u.created_at).toLocaleDateString();
+    return '<tr>' +
+      '<td><span class="badge badge-blue">#'+u.position+'</span></td>' +
+      '<td><strong style="color:#fff">'+u.username+'</strong></td>' +
+      '<td>'+u.email+'</td>' +
+      '<td class="wallet" title="'+w+'">'+shortW+'</td>' +
+      '<td><span class="badge badge-green">'+u.invite_code+'</span></td>' +
+      '<td>'+(u.invited_by||'<span style="color:#444">-</span>')+'</td>' +
+      '<td>'+date+'</td>' +
+      '</tr>';
+  }).join('');
+}
+
+function filterTable() {
+  var q = document.getElementById('search').value.toLowerCase();
+  var filtered = allUsers.filter(function(u){
+    return u.username.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || (u.wallet||'').toLowerCase().includes(q);
+  });
+  renderTable(filtered);
+}
+
+function exportCSV() {
+  var rows = [['Position','Username','Email','Wallet','Invite Code','Invited By','Joined']];
+  allUsers.forEach(function(u){rows.push([u.position,u.username,u.email,u.wallet,u.invite_code,u.invited_by||'',new Date(u.created_at).toLocaleDateString()]);});
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+(c||'')+'"';}).join(',');}).join('
+');
+  var a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download = 'whitelist.csv';
+  a.click();
+}
+
+function doLogout() {
+  adminPw = '';
+  allUsers = [];
+  document.getElementById('login-screen').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+}
+
+// Auto refresh every 30 seconds
+setInterval(async function(){
+  if (!adminPw) return;
+  var r = await fetch('/admin/data?password='+encodeURIComponent(adminPw));
+  var d = await r.json();
+  if (d.users) { allUsers = d.users; renderStats(d); filterTable(); }
+}, 30000);
+</script>
+</body>
+</html>
