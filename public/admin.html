@@ -4,36 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WHALENIZER Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:#0a0a0a;color:#e0e0e0;font-family:Inter,sans-serif;padding:40px 24px;min-height:100vh;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a0a;color:#e0e0e0;font-family:sans-serif;padding:40px 24px;min-height:100vh;}
 .login-box{max-width:360px;margin:100px auto;background:#111;border:1px solid #222;border-radius:16px;padding:32px;}
 .login-title{font-size:18px;font-weight:600;color:#fff;margin-bottom:24px;text-align:center;}
-.field{margin-bottom:16px;}
-.field input{width:100%;padding:12px 14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:#fff;font-family:Inter,sans-serif;font-size:14px;outline:none;}
-.field input:focus{border-color:#555;}
-.btn{width:100%;padding:13px;background:#fff;color:#000;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:Inter,sans-serif;cursor:pointer;margin-bottom:10px;}
+input{width:100%;padding:12px 14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:#fff;font-size:14px;outline:none;margin-bottom:16px;font-family:sans-serif;}
+input:focus{border-color:#555;}
+.btn{width:100%;padding:13px;background:#fff;color:#000;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
 .btn:hover{background:#e0e0e0;}
-.btn-sm{padding:8px 16px;background:#1a1a1a;color:#fff;border:1px solid #333;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:Inter,sans-serif;}
-.btn-sm:hover{background:#222;}
+.btn-sm{padding:8px 16px;background:#1a1a1a;color:#fff;border:1px solid #333;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;}
 .err{color:#f87171;text-align:center;font-size:13px;margin-top:8px;}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid #1a1a1a;}
 .title{font-size:18px;font-weight:600;color:#fff;}
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
-.stat-card{background:#111;border:1px solid #1a1a1a;border-radius:12px;padding:18px;}
-.stat-val{font-size:28px;font-weight:700;color:#fff;margin-bottom:4px;}
-.stat-lbl{font-size:11px;color:#555;letter-spacing:1px;text-transform:uppercase;}
-.search{padding:10px 14px;background:#111;border:1px solid #222;border-radius:10px;color:#fff;font-family:Inter,sans-serif;font-size:13px;outline:none;width:260px;}
-.search:focus{border-color:#444;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.stat{background:#111;border:1px solid #1a1a1a;border-radius:12px;padding:18px;}
+.sv{font-size:28px;font-weight:700;color:#fff;margin-bottom:4px;}
+.sl{font-size:11px;color:#555;letter-spacing:1px;text-transform:uppercase;}
+.search{padding:10px 14px;background:#111;border:1px solid #222;border-radius:10px;color:#fff;font-size:13px;outline:none;width:260px;margin-bottom:0;}
 table{width:100%;border-collapse:collapse;background:#111;border-radius:12px;overflow:hidden;font-size:13px;}
 th{padding:12px 14px;text-align:left;font-size:11px;font-weight:600;color:#555;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #1a1a1a;}
 td{padding:11px 14px;border-bottom:1px solid #151515;color:#bbb;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#131313;}
 .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;}
-.bg{background:#0a1a2a;color:#60a5fa;border:1px solid #1d4ed8;}
-.gg{background:#0a2a0a;color:#4ade80;border:1px solid #166534;}
+.bb{background:#0a1a2a;color:#60a5fa;border:1px solid #1d4ed8;}
+.bg{background:#0a2a0a;color:#4ade80;border:1px solid #166534;}
 .mono{font-family:monospace;font-size:12px;}
 </style>
 </head>
@@ -41,7 +37,7 @@ tr:hover td{background:#131313;}
 <div id="login-screen">
   <div class="login-box">
     <div class="login-title">WHALENIZER Admin</div>
-    <div class="field"><input type="password" id="pw" placeholder="Enter admin password"></div>
+    <input type="password" id="pw" placeholder="Enter admin password">
     <button class="btn" id="login-btn">Login</button>
     <div class="err" id="login-err"></div>
   </div>
@@ -55,82 +51,74 @@ tr:hover td{background:#131313;}
       <button class="btn-sm" id="logout-btn">Logout</button>
     </div>
   </div>
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-val" id="s-total">0</div><div class="stat-lbl">Total Users</div></div>
-    <div class="stat-card"><div class="stat-val" id="s-invited">0</div><div class="stat-lbl">Via Invite</div></div>
-    <div class="stat-card"><div class="stat-val" id="s-today">0</div><div class="stat-lbl">Today</div></div>
-    <div class="stat-card"><div class="stat-val" id="s-top">-</div><div class="stat-lbl">Top Inviter</div></div>
+  <div class="stats">
+    <div class="stat"><div class="sv" id="s-total">0</div><div class="sl">Total Users</div></div>
+    <div class="stat"><div class="sv" id="s-invited">0</div><div class="sl">Via Invite</div></div>
+    <div class="stat"><div class="sv" id="s-today">0</div><div class="sl">Today</div></div>
+    <div class="stat"><div class="sv" id="s-top">-</div><div class="sl">Top Inviter</div></div>
   </div>
   <table>
-    <thead><tr><th>#</th><th>Username</th><th>Email</th><th>Wallet</th><th>Invite Code</th><th>Invited By</th><th>Joined</th></tr></thead>
+    <thead><tr><th>Pos</th><th>Username</th><th>Email</th><th>Wallet</th><th>Code</th><th>Invited By</th><th>Joined</th></tr></thead>
     <tbody id="tbody"></tbody>
   </table>
 </div>
 <script>
 var allUsers = [];
-var pw = '';
-function getId(id){return document.getElementById(id);}
-getId('login-btn').addEventListener('click', doLogin);
-getId('pw').addEventListener('keydown', function(e){if(e.key==='Enter')doLogin();});
-async function doLogin(){
-  var p = getId('pw').value;
-  if(!p) return;
-  var r = await fetch('/admin/data?password='+encodeURIComponent(p));
-  if(r.status===401){getId('login-err').textContent='Wrong password';return;}
-  var d = await r.json();
-  if(d.error){getId('login-err').textContent=d.error;return;}
-  pw = p; allUsers = d.users;
-  getId('login-screen').style.display='none';
-  getId('dashboard').style.display='block';
-  renderStats(d); renderTable(allUsers);
+var adminPw = "";
+document.getElementById("login-btn").addEventListener("click", doLogin);
+document.getElementById("pw").addEventListener("keydown", function(e) { if (e.key === "Enter") doLogin(); });
+async function doLogin() {
+  var p = document.getElementById("pw").value;
+  if (!p) return;
+  try {
+    var r = await fetch("/admin/data?password=" + encodeURIComponent(p));
+    if (r.status === 401) { document.getElementById("login-err").textContent = "Wrong password"; return; }
+    var d = await r.json();
+    if (d.error) { document.getElementById("login-err").textContent = d.error; return; }
+    adminPw = p; allUsers = d.users;
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    renderStats(d); renderTable(allUsers);
+  } catch(e) { document.getElementById("login-err").textContent = "Connection error"; }
 }
-function renderStats(d){
-  getId('s-total').textContent=d.total;
-  getId('s-invited').textContent=d.users.filter(function(u){return u.invited_by;}).length;
-  var today=new Date().toDateString();
-  getId('s-today').textContent=d.users.filter(function(u){return new Date(u.created_at).toDateString()===today;}).length;
-  if(d.topInviters&&d.topInviters.length){
-    var top=d.topInviters[0];
-    var tu=d.users.find(function(u){return u.invite_code===top.invited_by;});
-    getId('s-top').textContent=tu?tu.username:top.invited_by;
+function renderStats(d) {
+  document.getElementById("s-total").textContent = d.total;
+  document.getElementById("s-invited").textContent = d.users.filter(function(u) { return u.invited_by; }).length;
+  var today = new Date().toDateString();
+  document.getElementById("s-today").textContent = d.users.filter(function(u) { return new Date(u.created_at).toDateString() === today; }).length;
+  if (d.topInviters && d.topInviters.length) {
+    var top = d.topInviters[0];
+    var tu = d.users.find(function(u) { return u.invite_code === top.invited_by; });
+    document.getElementById("s-top").textContent = tu ? tu.username : top.invited_by;
   }
 }
-function renderTable(users){
-  getId('tbody').innerHTML=users.map(function(u){
-    var w=u.wallet||'';
-    var sw=w.length>16?w.slice(0,8)+'...'+w.slice(-6):w;
-    return '<tr><td><span class="badge bg">#'+u.position+'</span></td>'+
-      '<td style="color:#fff;font-weight:500">'+u.username+'</td>'+
-      '<td>'+u.email+'</td>'+
-      '<td class="mono" title="'+w+'">'+sw+'</td>'+
-      '<td><span class="badge gg">'+u.invite_code+'</span></td>'+
-      '<td>'+(u.invited_by||'<span style="color:#333">-</span>')+'</td>'+
-      '<td>'+new Date(u.created_at).toLocaleDateString()+'</td></tr>';
-  }).join('');
+function renderTable(users) {
+  document.getElementById("tbody").innerHTML = users.map(function(u) {
+    var w = u.wallet || "";
+    var sw = w.length > 16 ? w.slice(0, 8) + "..." + w.slice(-6) : w;
+    return "<tr><td><span class=\"badge bb\">#" + u.position + "</span></td><td style=\"color:#fff;font-weight:500\">" + u.username + "</td><td>" + u.email + "</td><td class=\"mono\" title=\"" + w + "\">" + sw + "</td><td><span class=\"badge bg\">" + u.invite_code + "</span></td><td>" + (u.invited_by || "<span style=\"color:#333\">-</span>") + "</td><td>" + new Date(u.created_at).toLocaleDateString() + "</td></tr>";
+  }).join("");
 }
-getId('search').addEventListener('input',function(){
-  var q=this.value.toLowerCase();
-  renderTable(allUsers.filter(function(u){return u.username.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)||(u.wallet||'').toLowerCase().includes(q);}));
+document.getElementById("search").addEventListener("input", function() {
+  var q = this.value.toLowerCase();
+  renderTable(allUsers.filter(function(u) { return u.username.toLowerCase().indexOf(q) > -1 || u.email.toLowerCase().indexOf(q) > -1 || (u.wallet || "").toLowerCase().indexOf(q) > -1; }));
 });
-getId('export-btn').addEventListener('click',function(){
-  var rows=[['Position','Username','Email','Wallet','Invite Code','Invited By','Joined']];
-  allUsers.forEach(function(u){rows.push([u.position,u.username,u.email,u.wallet,u.invite_code,u.invited_by||'',new Date(u.created_at).toLocaleDateString()]);});
-  var csv=rows.map(function(r){return r.map(function(c){return '"'+(c||'')+'"';}).join(',');}).join('
-');
-  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='whitelist.csv';a.click();
+document.getElementById("export-btn").addEventListener("click", function() {
+  var rows = [["Position","Username","Email","Wallet","Invite Code","Invited By","Joined"]];
+  allUsers.forEach(function(u) { rows.push([u.position,u.username,u.email,u.wallet,u.invite_code,u.invited_by||"",new Date(u.created_at).toLocaleDateString()]); });
+  var csv = rows.map(function(r) { return r.map(function(c) { return "\"" + (c||"") + "\""; }).join(","); }).join("\n");
+  var a = document.createElement("a"); a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv); a.download = "whitelist.csv"; a.click();
 });
-getId('logout-btn').addEventListener('click',function(){
-  pw='';allUsers=[];
-  getId('login-screen').style.display='block';
-  getId('dashboard').style.display='none';
-  getId('pw').value='';
+document.getElementById("logout-btn").addEventListener("click", function() {
+  adminPw = ""; allUsers = [];
+  document.getElementById("login-screen").style.display = "block";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("pw").value = "";
 });
-setInterval(async function(){
-  if(!pw)return;
-  var r=await fetch('/admin/data?password='+encodeURIComponent(pw));
-  var d=await r.json();
-  if(d.users){allUsers=d.users;renderStats(d);getId('search').dispatchEvent(new Event('input'));}
-},30000);
+setInterval(async function() {
+  if (!adminPw) return;
+  try { var r = await fetch("/admin/data?password=" + encodeURIComponent(adminPw)); var d = await r.json(); if (d.users) { allUsers = d.users; renderStats(d); document.getElementById("search").dispatchEvent(new Event("input")); } } catch(e) {}
+}, 30000);
 </script>
 </body>
 </html>
