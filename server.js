@@ -85,4 +85,11 @@ app.post("/whitelist/apply", async (req, res) => {
   }
 });
 
+app.get("/whitelist/invite-stats/:code", async (req, res) => {
+  try {
+    const count = await pool.query("SELECT COUNT(*) FROM whitelist WHERE invited_by=$1", [req.params.code]);
+    res.json({ invites: count.rows[0].count });
+  } catch(e) { res.json({ error: "Server error" }); }
+});
+
 app.listen(3000, async () => { await initDB(); console.log("Server running"); });

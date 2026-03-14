@@ -204,7 +204,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
         <div class="info-row"><span class="info-key">Wallet</span><span class="info-val" id="cg-wallet">-</span></div>
       </div>
       <div class="invite-box">
-        <div class="invite-title">Invite friends to move up</div>
+        <div class="invite-title">Invite friends to move up <span id="invite-count" style="background:#f0f0f0;padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px;">0 joined</span></div>
         <div class="invite-desc">Each person who joins with your invite link moves you up 1 spot on the whitelist.</div>
         <div class="invite-link">
           <input id="invite-url" readonly>
@@ -242,6 +242,9 @@ function showCongrats(user){
   document.getElementById('cg-wallet').textContent=w.length>20?w.slice(0,10)+'...'+w.slice(-6):w;
   var inviteUrl=window.location.origin+'?ref='+user.invite_code;
   document.getElementById('invite-url').value=inviteUrl;
+  fetch('/whitelist/invite-stats/'+user.invite_code).then(function(r){return r.json();}).then(function(d){
+    if(d.invites!==undefined)document.getElementById('invite-count').textContent=d.invites+' joined';
+  });
   document.getElementById('copy-btn').addEventListener('click',function(){navigator.clipboard.writeText(inviteUrl).then(function(){document.getElementById('copy-btn').textContent='Copied!';setTimeout(function(){document.getElementById('copy-btn').textContent='Copy';},2000);});});
 }
 // Check invite code in URL
