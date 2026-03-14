@@ -43,8 +43,8 @@ tr:hover td{background:#151515;}
 <div id="login-screen">
   <div class="login-box">
     <div class="login-title">WHALENIZER Admin</div>
-    <div class="field"><input type="password" id="pw-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn" onclick="doLogin()">Login</button>
+    <div class="field"><input type="password" placeholder="Enter admin password" id="pw-input"></div>
+    <button class="btn" id="login-btn">Login</button>
     <div class="err" id="login-err"></div>
   </div>
 </div>
@@ -92,7 +92,7 @@ var adminPw = '';
 async function doLogin() {
   var pw = document.getElementById('pw-input').value;
   if (!pw) return;
-  var r = await fetch('/admin/data?password=' + encodeURIComponent(pw));
+  var r = await fetch('/admin/data?password=' + encodeURIComponent(pw)); console.log('Status:', r.status);
   if (r.status === 401) { document.getElementById('login-err').textContent = 'Wrong password'; return; }
   var d = await r.json();
   if (d.error) { document.getElementById('login-err').textContent = d.error; return; }
@@ -170,6 +170,9 @@ setInterval(async function(){
   var d = await r.json();
   if (d.users) { allUsers = d.users; renderStats(d); filterTable(); }
 }, 30000);
+
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('pw-input').addEventListener('keydown', function(e){if(e.key==='Enter')doLogin();});
 </script>
 </body>
 </html>
