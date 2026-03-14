@@ -265,8 +265,8 @@ document.getElementById('btn1').addEventListener('click',async function(){
 document.getElementById('btn2').addEventListener('click',async function(){
   var otp=getOTP();
   if(otp.length<6)return showMsg('m2','Please enter all 6 digits.','err');
-  var r=await post('/whitelist/verify-otp',{email:currentEmail,otp:otp});
-  if(r&&r.ok)goStep(3);else showMsg('m2',(r&&r.error)||'Invalid code.','err');
+  var otp=getOTP();var r=await post('/whitelist/verify-otp',{email:window._verifiedEmail||currentEmail,otp:otp});
+  if(r&&r.ok){window._verifiedEmail=currentEmail;goStep(3);}else showMsg('m2',(r&&r.error)||'Invalid code.','err');
 });
 document.getElementById('back2').addEventListener('click',function(){goStep(1);});
 // Step 3: Wallet
