@@ -22,7 +22,7 @@ body{background:#fff;color:var(--black);font-family:'Inter',sans-serif;-webkit-f
 .hero-logo{width:120px;height:120px;object-fit:contain;margin-bottom:32px;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(0,150,255,.5));}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
 .hero-tag{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-bottom:20px;}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,80px);font-weight:700;line-height:1.05;margin-bottom:20px;color:var(--black);}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,80px);font-weight:700;line-height:1.05;margin-bottom:20px;}
 .hero-title em{font-style:italic;color:#3b82f6;}
 .hero-desc{font-size:clamp(15px,2vw,18px);color:var(--gray);max-width:520px;line-height:1.8;margin-bottom:44px;}
 .hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:var(--black);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .25s;}
@@ -75,15 +75,27 @@ body{background:#fff;color:var(--black);font-family:'Inter',sans-serif;-webkit-f
 .msg{padding:12px 16px;border-radius:10px;font-size:13px;margin-top:12px;display:none;font-weight:500;}
 .msg.ok{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;display:block;}
 .msg.err{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;display:block;}
-.congrats{display:none;text-align:center;padding:16px 0;}
+.congrats{display:none;text-align:center;padding:8px 0;}
 .congrats.show{display:block;animation:pop .5s cubic-bezier(.16,1,.3,1);}
 @keyframes pop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:none;}}
 .cg-whale{font-size:56px;margin-bottom:8px;}
 .cg-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;line-height:1;margin-bottom:4px;}
 .cg-lbl{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:20px;}
 .cg-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:10px;}
-.cg-text{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:28px;}
-.follow-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cg-text{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:20px;}
+.info-box{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;text-align:left;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;font-weight:600;color:var(--gray);letter-spacing:.5px;}
+.info-val{font-size:13px;font-weight:500;color:var(--black);word-break:break-all;text-align:right;max-width:60%;}
+.invite-box{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
+.invite-title{font-size:13px;font-weight:600;margin-bottom:6px;}
+.invite-desc{font-size:12px;color:var(--gray);margin-bottom:12px;line-height:1.6;}
+.invite-link{display:flex;gap:8px;align-items:center;}
+.invite-link input{flex:1;padding:10px 12px;background:var(--light);border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:'Inter',sans-serif;color:var(--black);outline:none;}
+.copy-btn{padding:10px 16px;background:var(--black);color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.copy-btn:hover{background:#333;}
+.follow-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
 .flink{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;color:var(--black);text-decoration:none;transition:all .2s;}
 .flink:hover{background:var(--black);color:#fff;border-color:var(--black);}
 .flink svg{width:14px;height:14px;fill:currentColor;}
@@ -144,41 +156,61 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
   </div>
   <div class="form-card">
     <div id="form-main">
-      <div class="stepbar"><div class="sb active" id="sb1"></div><div class="sb" id="sb2"></div><div class="sb" id="sb3"></div><div class="sb" id="sb4"></div></div>
+      <div class="stepbar"><div class="sb active" id="sb1"></div><div class="sb" id="sb2"></div><div class="sb" id="sb3"></div><div class="sb" id="sb4"></div><div class="sb" id="sb5"></div></div>
       <div class="fstep on" id="fs1">
-        <div class="step-label">Step 1 of 4 — Wallet</div>
-        <div class="field"><label>EVM / ERC-20 Wallet Address</label><input id="f-wallet" placeholder="0x..." autocomplete="off"><div class="fhint">Your Ethereum-compatible wallet address</div></div>
+        <div class="step-label">Step 1 of 5 — Email</div>
+        <div class="field"><label>Email Address</label><input id="f-email" type="email" placeholder="you@example.com"><div class="fhint">Enter your email to check if you are already registered</div></div>
         <button class="btn-next" id="btn1">Continue →</button>
         <div class="msg" id="m1"></div>
       </div>
       <div class="fstep" id="fs2">
-        <div class="step-label">Step 2 of 4 — Email</div>
-        <div class="field"><label>Email Address</label><input id="f-email" type="email" placeholder="you@example.com"><div class="fhint">We will send a one-time verification code here</div></div>
-        <button class="btn-next" id="btn2">Send verification code →</button>
+        <div class="step-label">Step 2 of 5 — Verify Email</div>
+        <div class="field"><label>Verification Code</label><div class="otp-row" id="otp-inputs"></div><div class="fhint" style="margin-top:10px">Enter the 6-digit code sent to your email</div></div>
+        <button class="btn-next" id="btn2">Verify →</button>
         <button class="btn-back" id="back2">← Back</button>
         <div class="msg" id="m2"></div>
       </div>
       <div class="fstep" id="fs3">
-        <div class="step-label">Step 3 of 4 — Username</div>
-        <div class="field"><label>Desired Username</label><input id="f-username" placeholder="your_username" autocomplete="off"><div class="fhint">3 to 20 characters · letters, numbers, underscore only</div></div>
-        <button class="btn-next" id="btn3">Verify my email →</button>
+        <div class="step-label">Step 3 of 5 — Wallet</div>
+        <div class="field"><label>EVM / ERC-20 Wallet Address</label><input id="f-wallet" placeholder="0x..." autocomplete="off"><div class="fhint">Your Ethereum-compatible wallet address</div></div>
+        <button class="btn-next" id="btn3">Continue →</button>
         <button class="btn-back" id="back3">← Back</button>
         <div class="msg" id="m3"></div>
       </div>
       <div class="fstep" id="fs4">
-        <div class="step-label">Step 4 of 4 — Verification</div>
-        <div class="field"><label>Enter the 6-digit code sent to your email</label><div class="otp-row" id="otp-inputs"></div></div>
-        <button class="btn-next" id="btn4">Submit application →</button>
+        <div class="step-label">Step 4 of 5 — Username</div>
+        <div class="field"><label>Desired Username</label><input id="f-username" placeholder="your_username" autocomplete="off"><div class="fhint">3 to 20 characters · letters, numbers, underscore only</div></div>
+        <button class="btn-next" id="btn4">Continue →</button>
         <button class="btn-back" id="back4">← Back</button>
         <div class="msg" id="m4"></div>
+      </div>
+      <div class="fstep" id="fs5">
+        <div class="step-label">Step 5 of 5 — Invite Code (Optional)</div>
+        <div class="field"><label>Invite Code</label><input id="f-invite" placeholder="e.g. ABC123" autocomplete="off"><div class="fhint">Have an invite code? Enter it to boost your position on the whitelist</div></div>
+        <button class="btn-next" id="btn5">Submit application →</button>
+        <button class="btn-back" id="back5">← Back</button>
+        <div class="msg" id="m5"></div>
       </div>
     </div>
     <div class="congrats" id="congrats">
       <div class="cg-whale">🐋</div>
       <div class="cg-num">#<span id="whale-num">-</span></div>
-      <div class="cg-lbl">Early Whale</div>
+      <div class="cg-lbl">Your Whitelist Position</div>
       <div class="cg-title">You are on the list!</div>
-      <div class="cg-text">Your application has been saved. You will be among the first to access WHALENIZER at launch.<br><br><strong>Wait for the next update.</strong> Follow us to stay in the loop.</div>
+      <div class="cg-text">Your application has been saved. You will be among the first to access WHALENIZER at launch. Share your invite link to move up the list!</div>
+      <div class="info-box">
+        <div class="info-row"><span class="info-key">Username</span><span class="info-val" id="cg-username">-</span></div>
+        <div class="info-row"><span class="info-key">Email</span><span class="info-val" id="cg-email">-</span></div>
+        <div class="info-row"><span class="info-key">Wallet</span><span class="info-val" id="cg-wallet">-</span></div>
+      </div>
+      <div class="invite-box">
+        <div class="invite-title">Invite friends to move up</div>
+        <div class="invite-desc">Each person who joins with your invite link moves you up 1 spot on the whitelist.</div>
+        <div class="invite-link">
+          <input id="invite-url" readonly>
+          <button class="copy-btn" id="copy-btn">Copy</button>
+        </div>
+      </div>
       <div class="follow-row">
         <a class="flink" href="https://x.com/whalenizer" target="_blank"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.632 5.906-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Follow on X</a>
         <a class="flink" href="https://t.me/whalenizer" target="_blank"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</a>
@@ -192,20 +224,85 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
   <div class="foot-right">2026 Whalenizer. All rights reserved.</div>
 </footer>
 <script>
+var currentEmail = '';
 document.getElementById('scroll-to-apply').addEventListener('click',function(){document.getElementById('apply').scrollIntoView({behavior:'smooth'});});
 var otpWrap=document.getElementById('otp-inputs');
 for(var j=0;j<6;j++){var inp=document.createElement('input');inp.maxLength=1;inp.inputMode='numeric';inp.type='text';(function(el){el.addEventListener('input',function(){if(el.value&&el.nextSibling)el.nextSibling.focus();});el.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!el.value&&el.previousSibling)el.previousSibling.focus();});})(inp);otpWrap.appendChild(inp);}
 function getOTP(){return Array.from(otpWrap.querySelectorAll('input')).map(function(i){return i.value;}).join('');}
-function goStep(n){document.querySelectorAll('.fstep').forEach(function(s){s.classList.remove('on');});var el=document.getElementById('fs'+n);if(el)el.classList.add('on');for(var i=1;i<=4;i++){var sb=document.getElementById('sb'+i);if(sb)sb.className='sb'+(i<n?' done':i===n?' active':'');}}
+function goStep(n){document.querySelectorAll('.fstep').forEach(function(s){s.classList.remove('on');});var el=document.getElementById('fs'+n);if(el)el.classList.add('on');for(var i=1;i<=5;i++){var sb=document.getElementById('sb'+i);if(sb)sb.className='sb'+(i<n?' done':i===n?' active':'');}}
 function showMsg(id,txt,type){var e=document.getElementById(id);e.textContent=txt;e.className='msg '+(type==='ok'?'ok':'err');}
 async function post(url,body){try{var r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return await r.json();}catch(e){return {error:'Server error'};}}
-document.getElementById('btn1').addEventListener('click',function(){var w=document.getElementById('f-wallet').value.trim();if(!w)return showMsg('m1','Please enter your wallet address.','err');if(!w.startsWith('0x')||w.length<20)return showMsg('m1','Please enter a valid EVM wallet address.','err');goStep(2);});
+function showCongrats(user){
+  document.getElementById('form-main').style.display='none';
+  var cg=document.getElementById('congrats');cg.classList.add('show');
+  document.getElementById('whale-num').textContent=user.position||'-';
+  document.getElementById('cg-username').textContent=user.username||'-';
+  document.getElementById('cg-email').textContent=user.email||'-';
+  var w=user.wallet||'';
+  document.getElementById('cg-wallet').textContent=w.length>20?w.slice(0,10)+'...'+w.slice(-6):w;
+  var inviteUrl=window.location.origin+'?ref='+user.invite_code;
+  document.getElementById('invite-url').value=inviteUrl;
+  document.getElementById('copy-btn').addEventListener('click',function(){navigator.clipboard.writeText(inviteUrl).then(function(){document.getElementById('copy-btn').textContent='Copied!';setTimeout(function(){document.getElementById('copy-btn').textContent='Copy';},2000);});});
+}
+// Check invite code in URL
+var urlParams=new URLSearchParams(window.location.search);
+var refCode=urlParams.get('ref')||'';
+if(refCode)document.getElementById('f-invite')&&(document.getElementById('f-invite').value=refCode);
+// Step 1: Email check
+document.getElementById('btn1').addEventListener('click',async function(){
+  var email=document.getElementById('f-email').value.trim();
+  if(!email||!email.includes('@'))return showMsg('m1','Please enter a valid email address.','err');
+  showMsg('m1','Checking...','ok');
+  this.disabled=true;
+  var r=await post('/whitelist/check-email',{email:email});
+  this.disabled=false;
+  if(r.exists){showCongrats(r.user);document.getElementById('apply').scrollIntoView({behavior:'smooth'});return;}
+  var r2=await post('/whitelist/send-otp',{email:email});
+  if(r2&&r2.ok){currentEmail=email;goStep(2);}
+  else showMsg('m1',(r2&&r2.error)||'Failed to send code.','err');
+});
+// Step 2: Verify OTP
+document.getElementById('btn2').addEventListener('click',async function(){
+  var otp=getOTP();
+  if(otp.length<6)return showMsg('m2','Please enter all 6 digits.','err');
+  var r=await post('/whitelist/verify-otp',{email:currentEmail,otp:otp});
+  if(r&&r.ok)goStep(3);else showMsg('m2',(r&&r.error)||'Invalid code.','err');
+});
 document.getElementById('back2').addEventListener('click',function(){goStep(1);});
-document.getElementById('btn2').addEventListener('click',async function(){var email=document.getElementById('f-email').value.trim();if(!email||!email.includes('@'))return showMsg('m2','Please enter a valid email address.','err');showMsg('m2','Sending verification code...','ok');this.disabled=true;var r=await post('/whitelist/send-otp',{email:email});this.disabled=false;if(r&&r.ok)goStep(3);else showMsg('m2',(r&&r.error)||'Failed to send code.','err');});
+// Step 3: Wallet
+document.getElementById('btn3').addEventListener('click',function(){
+  var w=document.getElementById('f-wallet').value.trim();
+  if(!w)return showMsg('m3','Please enter your wallet address.','err');
+  if(!w.startsWith('0x')||w.length<20)return showMsg('m3','Please enter a valid EVM wallet address.','err');
+  goStep(4);
+});
 document.getElementById('back3').addEventListener('click',function(){goStep(2);});
-document.getElementById('btn3').addEventListener('click',function(){var u=document.getElementById('f-username').value.trim();if(!u)return showMsg('m3','Please enter a username.','err');if(!/^[a-zA-Z0-9_]{3,20}$/.test(u))return showMsg('m3','3-20 characters: letters, numbers, underscore only.','err');goStep(4);setTimeout(function(){var f=otpWrap.querySelector('input');if(f)f.focus();},300);});
+// Step 4: Username
+document.getElementById('btn4').addEventListener('click',function(){
+  var u=document.getElementById('f-username').value.trim();
+  if(!u)return showMsg('m4','Please enter a username.','err');
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(u))return showMsg('m4','3-20 characters: letters, numbers, underscore only.','err');
+  goStep(5);
+  if(refCode&&document.getElementById('f-invite'))document.getElementById('f-invite').value=refCode;
+});
 document.getElementById('back4').addEventListener('click',function(){goStep(3);});
-document.getElementById('btn4').addEventListener('click',async function(){var otp=getOTP();if(otp.length<6)return showMsg('m4','Please enter all 6 digits.','err');showMsg('m4','Submitting your application...','ok');this.disabled=true;var r=await post('/whitelist/apply',{wallet:document.getElementById('f-wallet').value.trim(),email:document.getElementById('f-email').value.trim(),username:document.getElementById('f-username').value.trim(),otp:otp});this.disabled=false;if(r&&r.ok){document.getElementById('form-main').style.display='none';var cg=document.getElementById('congrats');cg.classList.add('show');if(r.position)document.getElementById('whale-num').textContent=r.position;}else showMsg('m4',(r&&r.error)||'Submission failed. Please try again.','err');});
+// Step 5: Submit
+document.getElementById('btn5').addEventListener('click',async function(){
+  var otp=getOTP();
+  showMsg('m5','Submitting your application...','ok');
+  this.disabled=true;
+  var r=await post('/whitelist/apply',{
+    wallet:document.getElementById('f-wallet').value.trim(),
+    email:currentEmail,
+    username:document.getElementById('f-username').value.trim(),
+    otp:otp,
+    inviteCode:document.getElementById('f-invite').value.trim()
+  });
+  this.disabled=false;
+  if(r&&r.ok)showCongrats(r.user);
+  else showMsg('m5',(r&&r.error)||'Submission failed. Please try again.','err');
+});
+document.getElementById('back5').addEventListener('click',function(){goStep(4);});
 </script>
 </body>
 </html>
