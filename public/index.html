@@ -32,27 +32,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 
 /* PAGE ROUTING */
 .page{
+  display:none;
   opacity:0;
-  transform:translateY(16px);
-  pointer-events:none;
-  position:absolute;
-  top:0;left:0;right:0;
-  transition:opacity .45s cubic-bezier(.22,1,.36,1),transform .45s cubic-bezier(.22,1,.36,1);
+  transform:translateY(20px);
 }
 .page.active{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-  position:relative;
+  display:block;
+  animation:pageIn .5s cubic-bezier(.22,1,.36,1) forwards;
 }
-.page.exit{
-  opacity:0;
-  transform:translateY(-12px);
-  pointer-events:none;
-  position:absolute;
-  top:0;left:0;right:0;
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
-.page-wrap{position:relative;overflow:hidden;}
+.page-wrap{}
 
 /* HOME - HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;text-align:center;background:var(--light);position:relative;overflow:hidden;}
@@ -670,18 +662,19 @@ var _activePage=null;
 function showPage(name){
   var next=document.getElementById('page-'+name);
   if(!next)return;
-  if(_activePage&&_activePage!==next){
-    _activePage.classList.add('exit');
-    setTimeout(function(){if(_activePage)_activePage.classList.remove('active','exit');},420);
+  if(_activePage&&_activePage===next)return;
+  if(_activePage){
+    _activePage.classList.remove('active');
   }
   _activePage=next;
+  // force reflow so transition fires
+  next.getBoundingClientRect();
   next.classList.add('active');
   document.querySelectorAll('button[id$="-btn"][class*="nav-link"]').forEach(function(b){b.classList.remove('active');});
   var el=document.getElementById('nav-'+name+'-btn');
   if(el)el.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  // re-trigger reveals for new page
-  setTimeout(function(){observeReveals();},50);
+  window.scrollTo(0,0);
+  setTimeout(function(){observeReveals();},80);
 }
 
 /* SCROLL REVEAL */
