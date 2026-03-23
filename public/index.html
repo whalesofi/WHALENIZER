@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WHALENIZER — Trade Influence. Own the Ocean.</title>
+<link rel="icon" id="favicon" type="image/png" href="">
+<script>
+(function(){
+  var b64=null;
+  function setFavicon(){
+    if(!b64)return;
+    document.getElementById('favicon').href='data:image/png;base64,'+b64;
+  }
+  window.__setFaviconB64=function(s){b64=s;setFavicon();};
+})();
+</script>
 <meta name="description" content="WHALENIZER is a Web3 SocialFi protocol where every user profile is a tradeable on-chain asset.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -658,8 +669,15 @@ footer{border-top:1px solid rgba(13,13,13,.08);padding:36px 48px;display:flex;ju
 
 <script>
 /* PAGE ROUTING */
+/* HISTORY */
+history.replaceState({page:'home'},'','');
+window.addEventListener('popstate',function(e){
+  var pg=(e.state&&e.state.page)?e.state.page:'home';
+  showPage(pg,true);
+});
+
 var _activePage=null;
-function showPage(name){
+function showPage(name,fromPop){
   var next=document.getElementById('page-'+name);
   if(!next)return;
   if(_activePage&&_activePage===next)return;
@@ -673,6 +691,7 @@ function showPage(name){
   document.querySelectorAll('button[id$="-btn"][class*="nav-link"]').forEach(function(b){b.classList.remove('active');});
   var el=document.getElementById('nav-'+name+'-btn');
   if(el)el.classList.add('active');
+  if(!fromPop)history.pushState({page:name},'','');
   window.scrollTo(0,0);
   setTimeout(function(){observeReveals();},80);
 }
@@ -705,6 +724,9 @@ if(logoB64){
   var src='data:image/png;base64,'+logoB64;
   document.getElementById('nav-logo').src=src;
   document.getElementById('hero-logo').src=src;
+  // set favicon
+  var fl=document.getElementById('favicon');
+  if(fl)fl.href='data:image/png;base64,'+logoB64;
 }
 
 /* REF CODE */
