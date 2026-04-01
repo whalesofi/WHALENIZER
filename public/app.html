@@ -464,7 +464,7 @@ document.getElementById('a-btn1').addEventListener('click',async function(){
   if(!email||!email.includes('@'))return authErr(1,'Enter a valid email');
   this.disabled=true;this.textContent='Sending...';
   const r=await api('POST','/app/auth/send-otp',{email});
-  this.disabled=false;this.textContent='Continue →';
+  this.disabled=false;this.textContent='Continue \u2192';
   if(r.error)return authErr(1,r.error);
   _authEmail=email;
   document.getElementById('a-email-display').textContent=email;
@@ -475,12 +475,23 @@ document.getElementById('a-email').addEventListener('keydown',e=>{if(e.key==='En
 
 document.getElementById('a-back2').addEventListener('click',()=>authStep(1));
 
+async function resendOTP(){
+  if(!_authEmail)return;
+  const btn=document.getElementById('a-resend');
+  btn.textContent='Sending...';btn.disabled=true;
+  const r=await api('POST','/app/auth/send-otp',{email:_authEmail});
+  btn.disabled=false;
+  if(r.error){btn.textContent='Resend code';return authErr(2,r.error);}
+  clearOTP();btn.textContent='Sent!';
+  setTimeout(()=>{btn.textContent='Resend code';},3000);
+}
+
 document.getElementById('a-btn2').addEventListener('click',async function(){
   const otp=getOTP();
   if(otp.length<6)return authErr(2,'Enter all 6 digits');
   this.disabled=true;this.textContent='Verifying...';
   const r=await api('POST','/app/auth/verify',{email:_authEmail,otp});
-  this.disabled=false;this.textContent='Verify →';
+  this.disabled=false;this.textContent='Verify \u2192';
   if(r.error&&r.needUsername){authErrClear(2);authStep(3);return;}
   if(r.error)return authErr(2,r.error);
   TOKEN=r.token;ME=r.user;
@@ -494,7 +505,7 @@ document.getElementById('a-btn3').addEventListener('click',async function(){
   if(!username||!/^[a-zA-Z0-9_]{3,20}$/.test(username))return authErr(3,'3-20 chars: letters, numbers, underscore');
   this.disabled=true;this.textContent='Creating...';
   const r=await api('POST','/app/auth/verify',{email:_authEmail,otp,username});
-  this.disabled=false;this.textContent='Create Account →';
+  this.disabled=false;this.textContent='Create Account \u2192';
   if(r.error)return authErr(3,r.error);
   TOKEN=r.token;ME=r.user;
   localStorage.setItem('wh_token',TOKEN);
