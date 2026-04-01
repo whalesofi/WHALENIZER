@@ -229,30 +229,50 @@ body{background:var(--light);color:var(--ink);font-family:var(--sans);-webkit-fo
     <div class="auth-card">
       <div class="auth-logo"><img id="auth-logo" src="" alt="W"></div>
       <h1 class="auth-title">Enter the ocean.</h1>
-      <p class="auth-sub">Sign in with your email to access WHALENIZER.</p>
 
+      <!-- STEP 1: EMAIL -->
       <div class="auth-step on" id="astep1">
-        <div class="auth-field"><label>Email Address</label><input type="email" id="a-email" placeholder="you@example.com" autocomplete="email"></div>
-        <button class="auth-btn" id="a-btn1">Continue &rarr;</button>
+        <p class="auth-sub" style="margin-bottom:20px;">New or returning — enter your email to continue.</p>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <input type="email" id="a-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="auth-btn" id="a-btn1">Send Verification Code &rarr;</button>
         <div class="auth-err" id="a-err1"></div>
+        <div style="text-align:center;margin-top:20px;font-family:var(--mono);font-size:10px;color:var(--gray);line-height:1.8;">
+          No password needed &middot; We email you a code<br>
+          New users will be asked to choose a username
+        </div>
       </div>
 
+      <!-- STEP 2: OTP -->
       <div class="auth-step" id="astep2">
+        <p class="auth-sub" style="margin-bottom:6px;">Enter the 6-digit code sent to:</p>
+        <p style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--ink);margin-bottom:20px;" id="a-email-display"></p>
         <div class="auth-field">
-          <label>6-digit code sent to <span id="a-email-display"></span></label>
+          <label>Verification Code</label>
           <div class="auth-otp-row" id="a-otp-inputs"></div>
         </div>
-        <button class="auth-btn" id="a-btn2">Verify &rarr;</button>
-        <button class="auth-back" id="a-back2">&larr; Back</button>
+        <button class="auth-btn" id="a-btn2">Verify Code &rarr;</button>
+        <button class="auth-back" id="a-back2">&larr; Use different email</button>
         <div class="auth-err" id="a-err2"></div>
+        <div style="text-align:center;margin-top:16px;">
+          <button id="a-resend" style="background:none;border:none;font-family:var(--mono);font-size:10px;color:var(--gray);cursor:pointer;letter-spacing:1px;" onclick="resendOTP()">Resend code</button>
+        </div>
       </div>
 
+      <!-- STEP 3: NEW USER — CHOOSE USERNAME -->
       <div class="auth-step" id="astep3">
-        <p style="font-size:13px;color:var(--gray);margin-bottom:20px;">Choose a username to create your profile.</p>
-        <div class="auth-field"><label>Username</label><input type="text" id="a-username" placeholder="your_username" maxlength="20" autocomplete="off"></div>
-        <button class="auth-btn" id="a-btn3">Create Account &rarr;</button>
+        <p class="auth-sub" style="margin-bottom:20px;">Welcome! Choose a username for your profile. This cannot be changed later.</p>
+        <div class="auth-field">
+          <label>Username</label>
+          <input type="text" id="a-username" placeholder="your_username" maxlength="20" autocomplete="off">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--gray);margin-top:6px;">3-20 chars &middot; letters, numbers, underscore only</div>
+        </div>
+        <button class="auth-btn" id="a-btn3">Create My Account &rarr;</button>
         <div class="auth-err" id="a-err3"></div>
       </div>
+
     </div>
   </div>
 </div>
