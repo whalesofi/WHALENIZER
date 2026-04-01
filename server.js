@@ -12,6 +12,9 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.static("public"));
+app.get('/app', (req, res) => {
+  res.sendFile('app.html', { root: 'public' });
+});
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
